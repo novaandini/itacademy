@@ -1,0 +1,69 @@
+<?php
+
+namespace Database\Seeders;
+
+use Illuminate\Support\Str;
+use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
+class CourseFormatSeeder extends Seeder
+{
+    /**
+     * Run the database seeds.
+     */
+    public function run(): void
+    {
+        DB::table('course_formats')->insert([
+            [
+                'id' => 1,
+                'title' => 'Online Courses',
+                'slug' => Str::slug('Online Courses'),
+                'status' => 'show',
+                'content' => '<ul class="p-0" style="list-style: none">
+                    <li><i class="fa fa-arrow-right text-primary me-2"></i>Learn at your own pace with 24/7 access to materials.</li>
+                    <li><i class="fa fa-arrow-right text-primary me-2"></i>Interactive lessons, live webinars, and practical assignments.</li>
+                    <li><i class="fa fa-arrow-right text-primary me-2"></i>Options: Weekly, Monthly, Yearly, or Customized Programs.</li>
+                    <li><i class="fa fa-arrow-right text-primary me-2"></i>Certificate provided after successful completion.</li>
+                </ul>',
+            ],
+            [
+                'id' => 2,
+                'title' => 'Offline Courses',
+                'slug' => Str::slug('Offline Courses'),
+                'status' => 'show',
+                'content' => '<ul class="p-0" style="list-style: none">
+                    <li><i class="fa fa-arrow-right text-primary me-2"></i>Classroom-based learning with hands-on practice.</li>
+                    <li><i class="fa fa-arrow-right text-primary me-2"></i>Direct interaction with expert instructors.</li>
+                    <li><i class="fa fa-arrow-right text-primary me-2"></i>Options: Intensive (Weekly), Structured (Monthly), Comprehensive (Yearly), or Customized Programs.</li>
+                    <li><i class="fa fa-arrow-right text-primary me-2"></i>Certificate provided after successful completion.</li>
+                </ul>',
+            ],
+            [
+                'id' => 3,
+                'title' => 'Blended Courses',
+                'slug' => Str::slug('Blended Courses'),
+                'status' => 'show',
+                'content' => '<ul class="p-0" style="list-style: none">
+                    <li><i class="fa fa-arrow-right text-primary me-2"></i>Online theory combined with in-person practical workshops.</li>
+                    <li><i class="fa fa-arrow-right text-primary me-2"></i>Ideal for flexible yet immersive learning.</li>
+                    <li><i class="fa fa-arrow-right text-primary me-2"></i>Options: Intensive (Weekly), Structured (Monthly), Comprehensive (Yearly), or Customized Programs.</li>
+                    <li><i class="fa fa-arrow-right text-primary me-2"></i>Certificate provided after successful completion.</li>
+                </ul>',
+            ],
+            [
+                'id' => 4,
+                'title' => 'Intensive Courses',
+                'slug' => Str::slug('Intensive Courses'),
+                'status' => 'show',
+                'content' => '<ul class="p-0" style="list-style: none">
+                    <li><i class="fa fa-arrow-right text-primary me-2"></i>Condensed Content: Focused and comprehensive material tailored to fit the short timeframe.</li>
+                    <li><i class="fa fa-arrow-right text-primary me-2"></i>Practical Focus: Emphasis on hands-on exercises, real-world projects, and immediate skill application.</li>
+                    <li><i class="fa fa-arrow-right text-primary me-2"></i>Flexible Scheduling: Sessions are available on weekdays, weekends, or evenings to suit different schedules.</li>
+                    <li><i class="fa fa-arrow-right text-primary me-2"></i>Small Class Sizes: Ensures personalized guidance and interaction with instructors.</li>
+                    <li><i class="fa fa-arrow-right text-primary me-2"></i>Immediate Outcomes: Participants gain job-ready skills and a certificate upon completion.</li>
+                </ul>',
+            ],
+        ]);
+    }
+}
