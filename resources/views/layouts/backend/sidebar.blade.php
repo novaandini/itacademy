@@ -341,7 +341,7 @@
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="" class="nav-link">
+                                        <a href="{{ route('instructor.certification.index', $data->id) }}" class="nav-link">
                                             <i class="nav-icon fa fa-certificate"></i>
                                             <p>Certification</p>
                                         </a>

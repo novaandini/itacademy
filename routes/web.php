@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\Backend\Student\AssignmentStudentController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CartController;
@@ -27,16 +26,18 @@ use App\Http\Controllers\Backend\MenumanagerAdminController;
 use App\Http\Controllers\Backend\CategoryNewsAdminController;
 use App\Http\Controllers\Backend\CourseFormatAdminController;
 use App\Http\Controllers\Backend\CourseCategoryAdminContrroller;
+use App\Http\Controllers\Backend\Student\ScheduleStudentController;
+use App\Http\Controllers\Backend\Student\DashboardStudentController;
+use App\Http\Controllers\Backend\Student\AssignmentStudentController;
+use App\Http\Controllers\Backend\Student\AttendanceStudentController;
+use App\Http\Controllers\Backend\Student\EvaluationStudentController;
 use App\Http\Controllers\Backend\Instructor\CourseInstructorController;
 use App\Http\Controllers\Backend\Instructor\StudentInstructorController;
-use App\Http\Controllers\Backend\Instructor\LearningMaterialInstructorController;
-use App\Http\Controllers\Backend\Instructor\SubmissionInstructorController;
-use App\Http\Controllers\Backend\Student\AttendanceStudentController;
 use App\Http\Controllers\Backend\Student\CertificationStudentController;
-use App\Http\Controllers\Backend\Student\DashboardStudentController;
-use App\Http\Controllers\Backend\Student\EvaluationStudentController;
+use App\Http\Controllers\Backend\Instructor\SubmissionInstructorController;
 use App\Http\Controllers\Backend\Student\LearningMaterialStudentController;
-use App\Http\Controllers\Backend\Student\ScheduleStudentController;
+use App\Http\Controllers\Backend\Instructor\CertificationInstructorController;
+use App\Http\Controllers\Backend\Instructor\LearningMaterialInstructorController;
 
 /*
 |--------------------------------------------------------------------------
@@ -281,11 +282,8 @@ Route::middleware(['auth', 'role:instructor,Admin'])->prefix('instructor')->name
 
     Route::controller(SubmissionInstructorController::class)->prefix('{course}/submission')->name('submission.')->group(function() {
         Route::get('/{id}', 'index')->name('index');
-        Route::get('/create', 'create')->name('create');
-        Route::post('/store', 'store')->name('store');
-        Route::get('/edit/{id}', 'edit')->name('edit');
-        Route::put('/update/{id}', 'update')->name('update');
-        Route::delete('/destroy/{id}', 'destroy')->name('destroy');
+        Route::get('/{id}/review', 'review')->name('review');
+        Route::post('/{id}/store', 'store')->name('store');
     });
 
     Route::controller(CourseInstructorController::class)->prefix('course')->name('course.')->group(function() {
@@ -305,6 +303,10 @@ Route::middleware(['auth', 'role:instructor,Admin'])->prefix('instructor')->name
         Route::get('/edit/{id}', 'edit')->name('edit');
         Route::put('/update/{id}', 'update')->name('update');
         Route::delete('/destroy/{id}', 'destroy')->name('destroy');
+    });
+
+    Route::controller(CertificationInstructorController::class)->prefix('{course}/certification')->name('certification.')->group(function() {
+        Route::get('/', 'index')->name('index');
     });
 });
 

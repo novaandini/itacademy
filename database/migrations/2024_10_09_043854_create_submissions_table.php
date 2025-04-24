@@ -15,9 +15,10 @@ class CreateSubmissionsTable extends Migration
             $table->unsignedBigInteger('assignment_id'); 
             $table->uuid('user_id'); 
             $table->text('answer_text')->nullable();
-            $table->string('answer_file')->nullable(); 
-            $table->string('status')->default('submitted'); 
+            $table->string('file')->nullable(); 
+            $table->string('status_review')->default('pending'); 
             $table->integer('grade')->nullable(); 
+            $table->text('feedback')->nullable(); 
             $table->timestamps();
 
             $table->foreign('assignment_id')->references('id')->on('assignments')->onDelete('cascade');

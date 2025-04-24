@@ -10,7 +10,7 @@ class Assignment extends Model
     use HasFactory; // Menggunakan trait HasFactory
 
     // Mendefinisikan kolom yang dapat diisi secara massal
-    protected $fillable = ['course_id', 'title', 'description', 'file_path', 'deadline'];
+    protected $guarded = [];
 
     // Relasi ke model Course
     public function course()
