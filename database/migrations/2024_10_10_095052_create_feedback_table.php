@@ -11,13 +11,11 @@ class CreateFeedbackTable extends Migration
         Schema::create('feedback', function (Blueprint $table) {
             $table->id();
             $table->uuid('user_id'); 
-            $table->uuid('admin_id'); 
             $table->text('comments');
             $table->integer('rating')->nullable(); 
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('admin_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

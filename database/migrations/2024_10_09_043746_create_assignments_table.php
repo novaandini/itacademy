@@ -10,14 +10,14 @@ class CreateAssignmentsTable extends Migration
     {
         Schema::create('assignments', function (Blueprint $table) {
             $table->id();
-            $table->uuid('course_id');
+            $table->uuid('module_id');
             $table->string('title');
             $table->text('description')->nullable();
             $table->string('file_path')->nullable(); // Menyimpan file/gambar
             $table->timestamp('deadline')->nullable(); // Menyimpan deadline
             $table->timestamps();
 
-            $table->foreign('course_id')->references('id')->on('courses')->onDelete('cascade');
+            $table->foreign('module_id')->references('module_id')->on('modules')->onDelete('cascade');
         });
     }
 

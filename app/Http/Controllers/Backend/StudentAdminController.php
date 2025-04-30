@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\Backend;
 
-use App\Mail\StudentValidation;
+use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Student;
 use Illuminate\Http\Request;
+use App\Mail\StudentValidation;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Mail;
@@ -49,6 +50,15 @@ class StudentAdminController extends Controller
             $formdataEmail = [
                 'name' => $user->name,
             ];
+
+            if ($status == 'approved') {
+                $student = [
+                    'user_id' => $user->id,
+                    'student_id' => $this->generateCertificateNumber(),
+                ];
+        
+                Student::create($student);
+            }
             
             Mail::to($user->email)->send(new StudentValidation($formdataEmail, $status));
 
@@ -62,6 +72,19 @@ class StudentAdminController extends Controller
             DB::rollBack();
             return redirect()->back()->with('error', $th->getMessage());
         }
+    }
+
+    function generateCertificateNumber()
+    {
+        $count = Student::count() + 1;
+        $number = str_pad($count, 4, '0', STR_PAD_LEFT);
+
+        $date = Carbon::now(); // Mendapatkan tanggal saat ini
+        $formattedDate = $date->format('dmy');
+
+        $student_number = $number . $formattedDate;
+
+        return $student_number;
     }
 
     /**

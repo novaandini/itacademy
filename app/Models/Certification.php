@@ -8,15 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Certification extends Model
 {
     use HasFactory;
-    protected $fillable = [
-        'user_id',
-        'course_id',
-        'certificate_number',
-        'title',
-        'description',
-        'image',
-        'date'
-    ];
+    protected $guarded = [];
     protected $casts = [
         'date' => 'date', // Automatically cast the date to Carbon
     ];

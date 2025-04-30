@@ -11,15 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('attendances', function (Blueprint $table) {
+        Schema::create('students', function (Blueprint $table) {
             $table->id();
             $table->uuid('user_id');
-            $table->date('date'); // Tanggal absensi
-            $table->enum('status', ['present', 'absent']); // Dropdown hadir atau tidak
-            $table->text('reason')->nullable(); // Alasan jika tidak hadir
+            $table->char('student_id')->index();
             $table->timestamps();
 
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete();
         });
     }
 
@@ -28,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('attendences');
+        Schema::dropIfExists('students');
     }
 };

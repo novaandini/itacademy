@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('instructors', function (Blueprint $table) {
             $table->id();
             $table->uuid('user_id');
+            $table->char('instructor_id')->nullable();
             $table->string('skills')->nullable();
             $table->string('cv')->nullable();
             $table->timestamps();

@@ -16,10 +16,10 @@ return new class extends Migration
             $table->uuid('user_id'); // Foreign key to users table, with cascading delete
             $table->uuid('course_id'); // Foreign key to courses table, with cascading delete
             $table->string('certificate_number');
-            $table->string('title')->nullable();; // Title of the certification
             $table->text('description'); // Description of the certification
-            $table->string('image')->nullable(); // URL or path to the image, make nullable if it's optional
+            $table->enum('status', ['pending', 'approved', 'rejected'])->nullable(); // URL or path to the image, make nullable if it's optional
             $table->date('date')->nullable(); // Date field for certification date
+            $table->json('score');
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete();

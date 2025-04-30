@@ -27,7 +27,7 @@ return new class extends Migration
             $table->text('description');
             $table->integer('rating');
             $table->integer('reviews_count');
-            $table->string('status')->default('pending');
+            $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');
             $table->string('slug');
             $table->timestamps();
 

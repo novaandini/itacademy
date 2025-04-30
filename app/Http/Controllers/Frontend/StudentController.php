@@ -8,6 +8,7 @@ use App\Models\Student;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
@@ -20,50 +21,57 @@ class StudentController extends Controller
 
     public function store(Request $request)
     {
-        // Validate required fields, excluding role
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users,email',
-            'password' => 'required|string|min:8',
-            'password_confirmation' => 'required|string|same:password',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,svg|max:2048'
-        ]);
-    
-        // Check validation errors
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
-        }
+        DB::beginTransaction();
+        try {
+            $validator = Validator::make($request->all(), [
+                'name' => 'required|string|max:255',
+                'email' => 'required|string|email|max:255|unique:users,email',
+                'password' => 'required|string|min:8',
+                'password_confirmation' => 'required|string|same:password',
+                'image' => 'nullable|image|mimes:jpeg,png,jpg,svg|max:2048'
+            ]);
         
-        $imageName = 'default.jpg';
-        // if ($request->hasFile('image')) {
-        //     $image = $request->file('image');
-        //     $imageName = time() . '.' . $image->getClientOriginalExtension();
-        //     $image->move(public_path('../../public_html/assets/img/students'), $imageName);
-        //     // $imageName = time() . '.' . $request->image->extension();  // Generate image file name
-        //     // $request->image->move(public_path('assets/img/students'), $imageName);  // Save image in 'assets/img/instructors' folder
-        // }
-        
-        if ($request->file('image') != "") {
-                $file = $request->file('image');
-                $imageName = 'instructor_' .time() . '.' . $file->getClientOriginalExtension();
-                $request->file('image')->storeAs('instructors', $imageName, 'public');
+            // Check validation errors
+            if ($validator->fails()) {
+                return redirect()->back()->withErrors($validator)->withInput();
             }
-
-        $formdata = [
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'role' => 'student', // Assign default role
-            'image' => $imageName,
-            'status' => 'pending',
-        ];
+            
+            $imageName = 'default.jpg';
+            // if ($request->hasFile('image')) {
+            //     $image = $request->file('image');
+            //     $imageName = time() . '.' . $image->getClientOriginalExtension();
+            //     $image->move(public_path('../../public_html/assets/img/students'), $imageName);
+            //     // $imageName = time() . '.' . $request->image->extension();  // Generate image file name
+            //     // $request->image->move(public_path('assets/img/students'), $imageName);  // Save image in 'assets/img/instructors' folder
+            // }
+            
+            if ($request->file('image') != "") {
+                    $file = $request->file('image');
+                    $imageName = 'instructor_' .time() . '.' . $file->getClientOriginalExtension();
+                    $request->file('image')->storeAs('instructors', $imageName, 'public');
+                }
     
-        User::create($formdata);
-    
-        // Redirect to the login page with a success message
-        return redirect()->route('home')->with('success', 'Your registration is being processed. Please wait for your registration approval');
+            $formdata = [
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+                'role' => 'student', // Assign default role
+                'image' => $imageName,
+                'status' => 'pending',
+            ];
+        
+            User::create($formdata);
+        
+            DB::commit();
+            return redirect()->route('home')->with('success', 'Your registration is being processed. Please wait for your registration approval');
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return redirect()->back()->with('error', $th->getMessage())->withInput();
+        } catch (\Exception $th) {
+            DB::rollBack();
+            return redirect()->back()->with('error', $th->getMessage())->withInput();
+        }
     }
-
 
     // public function index(Request $request)
     // {

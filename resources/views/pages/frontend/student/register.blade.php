@@ -11,6 +11,13 @@
                     <form action="{{ route('student.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
 
+                        @if (session('error'))
+                            <div class="alert alert-danger alert-dismissible">
+                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                {{ session('error') }}
+                            </div>
+                        @endif
+
                         <!-- Name -->
                         <div class="form-group mb-3">
                             <label for="name" class="form-label">Name</label>

@@ -16,7 +16,7 @@ class CreateSubmissionsTable extends Migration
             $table->uuid('user_id'); 
             $table->text('answer_text')->nullable();
             $table->string('file')->nullable(); 
-            $table->string('status_review')->default('pending'); 
+            $table->enum('status_review', ['pending', 'graded'])->default('pending'); 
             $table->integer('grade')->nullable(); 
             $table->text('feedback')->nullable(); 
             $table->timestamps();

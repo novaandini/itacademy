@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\Backend;
 
-use App\Mail\InstructorValidation;
+use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Instructor;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Mail\InstructorValidation;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
@@ -109,8 +110,13 @@ class InstructorAdminController extends Controller
                     'password' => Hash::make($password),
                     'status' => 'approved'
                 ];
+
+                $instructor = [
+                    'instructor_id' => $this->generateCertificateNumber(),
+                ];
     
                 User::where('id', $id)->update($formdata);
+                Instructor::where('user_id', $id)->update($instructor);
     
                 $user = User::find($id);
                 $formdataEmail = [
@@ -153,4 +159,16 @@ class InstructorAdminController extends Controller
         }
     }
 
+    function generateCertificateNumber()
+    {
+        $count = Instructor::where('instructor_id', '!=', null)->count() + 1;
+        $number = str_pad($count, 4, '0', STR_PAD_LEFT);
+
+        $date = Carbon::now(); // Mendapatkan tanggal saat ini
+        $formattedDate = $date->format('dmy');
+
+        $student_number = 'INS' . $number . $formattedDate;
+
+        return $student_number;
+    }
 }

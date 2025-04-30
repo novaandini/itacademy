@@ -16,6 +16,7 @@ class InstructorSeeder extends Seeder
         DB::table('instructors')->insert([
             [
                 'user_id' => 2,
+                'instructor_id' => 'INS0001290425',
             ],
         ]);
     }

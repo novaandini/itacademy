@@ -25,33 +25,20 @@
                     <h1 class="card-title">{{ $title }}</h1>
                 </div>
                 <div class="card-body">
-                    @if($data != null)
-                        <form action="">
-                            
-                        </form>
-                        <table id="example1" class="table table-bordered table-striped">
-                            <thead>
-                                <tr>
-                                    <th>Program</th>
-                                    <th>Date</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($data as $data)
-                                    <tr>
-                                        <td>{{ $data->course->title }}</td>
-                                        <td>{{ \Carbon\Carbon::parse($data->created_at)->format('d M Y, H:i') }}</td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                            <tfoot>
-                                <tr>
-                                    <th>Program</th>
-                                    <th>Date</th>
-                                </tr>
-                            </tfoot>
-                        </table>                      
-                    @endif
+                    <form action="{{ route('instructor.certification.store', $course) }}" method="post">
+                        @csrf
+                        <div class="row">
+                            @foreach ($data as $data)
+                                <div class="form-group col-md-6">
+                                    <label for="score_{{ $data->user->id }}" class="form-label">{{ $data->user->name }}</label>
+                                    <input type="number" name="score[{{ $data->user->id }}]" id="" class="form-control" value="{{ number_format($data->average_score, 1) }}">
+                                </div>
+                            @endforeach
+                        </div>
+                        <div class="text-right mt-4">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>

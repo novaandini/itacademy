@@ -13,14 +13,15 @@ return new class extends Migration
     {
         Schema::create('learning_materials', function (Blueprint $table) {
             $table->id();
-            $table->uuid('course_id');
+            $table->string('module_id');
             $table->string('title');
-            $table->text('description');
+            $table->text('description')->nullable();
             $table->string('file_path')->nullable();
+            $table->enum('status', ['show', 'hide']);
             $table->timestamps();
     
             // Foreign key
-            $table->foreign('course_id')->references('id')->on('courses')->onDelete('cascade');
+            $table->foreign('module_id')->references('module_id')->on('modules')->onDelete('cascade');
         });
     }
 
