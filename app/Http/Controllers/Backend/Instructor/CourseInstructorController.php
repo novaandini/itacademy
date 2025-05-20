@@ -9,8 +9,8 @@ use Illuminate\Http\Request;
 use App\Models\CourseCategory;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Models\Module;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
 
 class CourseInstructorController extends Controller
 {
@@ -33,6 +33,7 @@ class CourseInstructorController extends Controller
     }
 
     public function store(Request $request) {
+        // dd($request->all());
         DB::beginTransaction();
         try {
             $image = null;
@@ -78,7 +79,30 @@ class CourseInstructorController extends Controller
             ];
         
             // Create a new course
-            Course::create($formdata);
+            $course = Course::create($formdata);
+
+            $modules = [];
+            foreach ($request->module_titles as $index => $title) {
+                $modules[$index + 1] = [
+                    'course_id' => $course->id,
+                    'module_id' => Str::random(8),
+                    'title' => $title,
+                    'description' => $request->module_descriptions[$index] ?? '',
+                    'learning_objectives' => $request->module_objectives[$index] ?? '',
+                    'content' => $request->module_contents[$index] ?? '',
+                    'duration_hours' => $request->module_durations[$index] ?? '',
+                    'activities' => $request->module_activities[$index] ?? '',
+                    'assessment_type' => $request->module_assesssment_types[$index] ?? '',
+                    'passing_grade' => $request->module_passing_grades[$index] ?? 0,
+                    'resources' => $request->module_resources[$index] ?? '',
+                    'prerequisites' => $request->module_prerequisites[$index] ?? '',
+                ];
+            }
+            // dd($modules);
+
+            foreach ($modules as $module) {
+                Module::create($module);
+            };
         
             DB::commit();
             return redirect()->route('instructor.course.index')->with('success', 'Kursus berhasil didaftarkan. Mohon tunggu email dari kami terkait verifikasi kursus.');

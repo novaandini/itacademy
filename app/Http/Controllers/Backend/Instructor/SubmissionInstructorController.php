@@ -15,12 +15,12 @@ use Illuminate\Support\Facades\Mail;
 
 class SubmissionInstructorController extends Controller
 {
-    public function index($course, $id)
+    public function index($module, $id)
     {
         $submission = Submission::with('user')->where('assignment_id', $id)->get();
         
         $data = [
-            'course' => $course,
+            'module' => $module,
             'title' => Assignment::find($id)->title,
             'submission' => $submission,
         ];
@@ -28,7 +28,6 @@ class SubmissionInstructorController extends Controller
         return view('pages.backend.instructor.submission.index', $data); // Mengembalikan view dengan data assignments
     }
 
-    // Menampilkan form untuk mengirim submission untuk assignment tertentu
     public function create($assignmentId)
     {
         $assignment = Assignment::findOrFail($assignmentId); // Mencari assignment berdasarkan ID
@@ -70,13 +69,12 @@ class SubmissionInstructorController extends Controller
         }
     }
 
-    // Menampilkan semua submission yang telah disubmit untuk review
-    public function review($course, $id)
+    public function review($module, $id)
     {
         $submission = Submission::with('user')->find($id);
         $data = [
             'data' => $submission,
-            'course' => $course,
+            'module' => $module,
             'title' => Assignment::find($submission->assignment_id)->title,
         ];
         return view('pages.backend.instructor.submission.form', $data);

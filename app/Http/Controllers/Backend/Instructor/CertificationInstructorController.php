@@ -11,7 +11,6 @@ use App\Http\Controllers\Controller;
 class CertificationInstructorController extends Controller
 {
     public function index($course) {
-        // dd($data['data']);
         $student = StudentCourse::select(
             'student_courses.id',
             'student_courses.user_id',

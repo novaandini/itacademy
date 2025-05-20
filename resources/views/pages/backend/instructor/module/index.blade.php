@@ -7,12 +7,12 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0">Learning Materials</h1>
+                    <h1 class="m-0">Modules</h1>
                 </div><!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active">Learning Materials</li>
+                        <li class="breadcrumb-item active">Modules</li>
                     </ol>
                 </div><!-- /.col -->
             </div><!-- /.row -->
@@ -22,7 +22,6 @@
     <!-- Main content -->
     <section class="content">
         <div class="container-fluid">
-            <a href="{{ route('instructor.learning-materials.create', $module) }}" class="btn btn-success mb-3">Add Data</a>
 
             <!-- Alert for success message -->
             @if (session('success'))
@@ -38,42 +37,29 @@
             @endif
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">Learning Materials</h3>
+                    <h3 class="card-title">Modules</h3>
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">
                     <table id="example1" class="table table-bordered table-striped">
                         <thead>
                             <tr class="text-center">
+                                <th scope="col">No</th>
                                 <th scope="col">Title</th>
                                 <th scope="col">Description</th>
-                                <th scope="col">Module</th>
                                 <th scope="col">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($learningMaterials as $material)
+                            @foreach($data as $index => $data)
                                 <tr>
-                                    <td>{{ $material->title ?? '-' }}</td> <!-- Menampilkan title course dari relasi -->
-                                    <td>{{ strip_tags(\Illuminate\Support\Str::limit($material->description, 75)) ?? '-' }}</td>
+                                    <td>{{ $index + 1 }}</td>
+                                    <td>{{ $data->title ?? '-' }}</td> <!-- Menampilkan title course dari relasi -->
+                                    <td>{{ \Illuminate\Support\Str::limit(strip_tags($data->description, 50)) ?? '-' }}</td>
                                     <td class="text-center">
-                                        @if ($material->file_path != null)
-                                            <a href="{{ Storage::url($material->file_path) }}" target="_blank" download class="btn btn-info btn-sm rounded-pill">
-                                                Download
-                                            </a>
-                                        @endif
-                                    </td>
-                                    <td class="text-center">
-                                        <a href="{{ route('instructor.learning-materials.edit', [$module, $material->id]) }}" class="btn btn-sm btn-warning me-2"><i class="fa fa-edit"></i></a> 
-                                        <form action="{{ route('instructor.learning-materials.destroy', [$module, $material->id]) }}"
-                                            data-id="{{ $material->id }}" method="POST" style="display:inline-block;"
-                                            class="delete">
-                                            @csrf
-                                            @method('delete')
-                                            <button type="submit" class="btn btn-danger btn-sm">
-                                                <i class="fa fa-trash"></i>
-                                            </button>
-                                        </form>
+                                        <a href="{{ route('instructor.module.edit', [$course, $data->module_id]) }}" class="btn btn-sm btn-warning me-2"><i class="fa fa-edit"></i></a> 
+                                        <a href="{{ route('instructor.learning-materials.index', [$data->module_id]) }}" class="btn btn-sm btn-success me-2"><i class="fa fa-list"></i> Materials</a> 
+                                        <a href="{{ route('instructor.assignments.index', [$data->module_id]) }}" class="btn btn-sm btn-danger me-2"><i class="fa fa-list"></i> Assignments</a> 
                                     </td>
                                 </tr>
                             @endforeach
@@ -82,7 +68,6 @@
                             <tr class="text-center">
                                 <th scope="col">Title</th>
                                 <th scope="col">Description</th>
-                                <th scope="col">Module</th>
                                 <th scope="col">Actions</th>
                             </tr>
                         </tfoot>

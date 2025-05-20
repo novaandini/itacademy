@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Models\CourseCategory;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Models\Module;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 
@@ -55,6 +56,7 @@ class CourseAdminController extends Controller
             'data' => Course::findOrFail($id),
             'formats' => CourseFormat::all(),
             'programs' => CourseCategory::all(),
+            'modules' => Module::where('course_id', $id)->get(),
         ];
         return view('pages.backend.admin.course.form', $data);
     }

@@ -21,8 +21,8 @@
     <section class="content">
         <div class="container-fluid">
             <div class="d-flex justify-content-between">
-                <a href="{{ route('instructor.assignments.create', $course) }}" class="btn btn-success mb-3">New Assignment</a>
-                {{-- <a href="{{ route('instructor.submission.index', $course) }}" class="btn btn-success mb-3">Check Submission</a> --}}
+                <a href="{{ route('instructor.assignments.create', $module) }}" class="btn btn-success mb-3">New Assignment</a>
+                {{-- <a href="{{ route('instructor.submission.index', $module) }}" class="btn btn-success mb-3">Check Submission</a> --}}
             </div>
             @if (session('success'))
                 <div class="alert alert-success alert-dismissible">
@@ -53,15 +53,15 @@
                                     <td>{{ Illuminate\Support\Str::limit(strip_tags($data->description), 50) }}</td>
                                     <td>
                                         @isset($data->file_path)
-                                            <a href="{{ $data->file_path }}">File</a>
+                                            <a href="{{ $data->file_path }}" class="btn btn-primary btn-sm">Download File</a>
                                         @else
                                             <i>No File</i>
                                         @endisset
                                     </td>
                                     <td class="text-center">
                                         <!-- Approve and Reject buttons -->
-                                        <a href="{{ route('instructor.assignments.edit', [$course, $data->id]) }}" class="btn btn-info btn-sm"><i class="fa fa-edit"></i></a>
-                                        <form action="{{ route('instructor.assignments.destroy', [$course, $data->id]) }}"
+                                        <a href="{{ route('instructor.assignments.edit', [$module, $data->id]) }}" class="btn btn-info btn-sm"><i class="fa fa-edit"></i></a>
+                                        <form action="{{ route('instructor.assignments.destroy', [$module, $data->id]) }}"
                                             data-id="{{ $data->id }}" method="POST" style="display:inline-block;"
                                             class="delete">
                                             @csrf
@@ -70,7 +70,7 @@
                                                 <i class="fa fa-trash"></i>
                                             </button>
                                         </form>
-                                        <a href="{{ route('instructor.submission.index', [$course, $data->id]) }}" class="btn btn-success btn-sm"><i class="fa fa-eye"></i></a>
+                                        <a href="{{ route('instructor.submission.index', [$module, $data->id]) }}" class="btn btn-success btn-sm"><i class="fa fa-eye"></i></a>
                                     </td>
                                 </tr>
                             @endforeach

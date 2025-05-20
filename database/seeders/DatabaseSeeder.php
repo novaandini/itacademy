@@ -22,6 +22,9 @@ class DatabaseSeeder extends Seeder
             InstructorSeeder::class,
             CourseFormatSeeder::class,
             CourseProgramSeeder::class,
+            CourseSeeder::class,
+            ModuleSeeder::class,
+            StudentCourseSeeder::class,
         ]);
         DB::table('category_news')->insert([
             [

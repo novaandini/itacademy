@@ -7,12 +7,12 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0">Learning Material</h1>
+                    <h1 class="m-0">Module</h1>
                 </div><!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active">Learning Material</li>
+                        <li class="breadcrumb-item active">Module</li>
                     </ol>
                 </div><!-- /.col -->
             </div><!-- /.row -->
@@ -24,7 +24,7 @@
         <div class="container-fluid">
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">Form Learning Material</h3>
+                    <h3 class="card-title">Form Module</h3>
 
                 </div><!-- /.card-header -->
                 <div class="card-body">
@@ -35,7 +35,7 @@
                         </div>
                     @endif
 
-                    <form action="{{ $data != null ? route('instructor.learning-materials.update', [$module, $data->id]) : route('instructor.learning-materials.store', $module) }}" method="POST" enctype="multipart/form-data">
+                    <form action="{{ route('instructor.module.update', [$course, $data->module_id]) }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         @isset($data)
                             @method('put')
@@ -64,23 +64,63 @@
                             @enderror
                         </div>
 
-                        <div class="form-group mb-4">
-                            <label for="file_path">File</label>
-                            <input type="file" class="dropify @error('file_path') is-invalid @enderror" 
-                            id="file_path" name="file_path" accept="image/jpeg, image/png, application/pdf, application/msword, 
-                            application/vnd.openxmlformats-officedocument.wordprocessingml.document, 
-                            application/vnd.ms-powerpoint, application/vnd.openxmlformats-officedocument.presentationml.presentation" data-max-file-size="2M" data-allowed-file-extensions="jpg png jpeg pdf doc docx ppt pptx" data-default-file="{{ $data ? old('file_path', $data->file_path) : old('file_path') }}" data-show-remove="false" />
-                            @error('file_path')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                            @isset($data)
-                                <a href="{{ Storage::url($data->file_path) }}" target="_blank" download>
-                                    <small>Download File</small>
-                                </a>
-                            @endisset
+                        <div class="row">
+                            <div class="form-group mb-3 col-md-12">
+                                <label for="learning_objectives">Learning Objectives</label>
+                                <input type="text" name="learning_objectives" id="" class="form-control" value="{{ $data ? old('learning_objectives', $data->learning_objectives) : old('learning_objectives') }}">
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="form-group mb-3 col-md-6">
+                                <label for="content">Content/Material</label>
+                                <input type="text" name="content" id="" class="form-control" value="{{ $data ? old('content', $data->content) : old('content') }}">
+                            </div>
+                            <div class="form-group mb-3 col-md-6">
+                                <label for="duration_hours">Duration (hours)</label>
+                                <input type="number" name="duration_hours" value="{{ $data ? old('duration_hours', $data->duration_hours) : old('duration_hours') }}" min="1" max="100" id="" class="form-control">
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="form-group mb-3 col-md-6">
+                                <label for="activities">Activities</label>
+                                <input type="text" name="activities" id="" class="form-control" value="{{ $data ? old('activities', $data->activities) : old('activities') }}">
+                            </div>
+                            <div class="form-group mb-3 col-md-6">
+                                <label for="assessment_type">Assessment Type</label>
+                                <input type="text" name="assessment_type" id="" class="form-control" value="{{ $data ? old('assessment_type', $data->assessment_type) : old('assessment_type') }}">
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="form-group mb-3 col-md-6">
+                                <label for="passing_grade">Passing Grade (%)</label>
+                                <input type="number" name="passing_grade" min="1" max="100" id="" class="form-control" value="{{ $data ? old('passing_grade', $data->passing_grade) : old('passing_grade') }}">
+                            </div>
+                            <div class="form-group mb-3 col-md-6">
+                                <label for="status">Status</label>
+                                <select name="status" id="" class="form-control">
+                                    <option value="draft" {{ (old('status') ?? $data->module_status == 'draft') ? 'selected' : '' }}>Draft</option>
+                                    <option value="published" {{ (old('status') ?? $data->module_status == 'published') ? 'selected' : '' }}>Published</option>
+                                    <option value="unpublished" {{ (old('status') ?? $data->module_status == 'unpublished') ? 'selected' : '' }}>Unpublished</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="form-group mb-3 col-md-6">
+                                <label for="resources">Resources</label>
+                                <input type="text" name="resources" id="" class="form-control" value="{{ $data ? old('resources', $data->resources) : old('resources') }}">
+                            </div>
+                            <div class="form-group mb-3 col-md-6">
+                                <label for="prerequisites">Prerequisites</label>
+                                <input type="text" name="prerequisites" id="" class="form-control" value="{{ $data ? old('prerequisites', $data->prerequisites) : old('prerequisites') }}">
+                            </div>
                         </div>
 
                         <div class="d-flex justify-content-between">
+                            <a href="{{ route('instructor.module.index', $course) }}" class="btn btn-secondary">Back</a>
                             <button type="submit" class="btn btn-primary">Submit</button>
                         </div>
                     </form>

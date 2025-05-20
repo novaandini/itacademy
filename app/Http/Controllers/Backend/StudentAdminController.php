@@ -54,7 +54,7 @@ class StudentAdminController extends Controller
             if ($status == 'approved') {
                 $student = [
                     'user_id' => $user->id,
-                    'student_id' => $this->generateCertificateNumber(),
+                    'student_id' => $this->generateStudentNumber(),
                 ];
         
                 Student::create($student);
@@ -74,7 +74,7 @@ class StudentAdminController extends Controller
         }
     }
 
-    function generateCertificateNumber()
+    function generateStudentNumber()
     {
         $count = Student::count() + 1;
         $number = str_pad($count, 4, '0', STR_PAD_LEFT);

@@ -13,25 +13,25 @@ use Illuminate\Support\Facades\Storage;
 class LearningMaterialInstructorController extends Controller 
 {
     // Menampilkan semua learning materials yang dimiliki oleh instruktur yang sedang login
-    public function index($course)
+    public function index($module)
     {
         $instructorId = auth()->user()->id; // Mendapatkan nama instruktur yang sedang login
 
         // Mengambil learning materials yang terkait dengan kursus milik instruktur
         $data = [
-            'course' => $course,
-            'learningMaterials' => LearningMaterial::where('course_id', $course)->get()->sortBy('desc'),
+            'module' => $module,
+            'learningMaterials' => LearningMaterial::where('module_id', $module)->get(),
         ];
 
         return view('pages.backend.instructor.learning_materials.index', $data); // Mengembalikan view dengan data learning materials
     }
 
     // Menampilkan form untuk membuat learning material baru
-    public function create($course)
+    public function create($module)
     {
         // Mengambil kursus yang dibuat oleh instruktur yang sedang login
         $data = [
-            'course' => Course::find($course),
+            'module' => $module,
             'data' => null,
         ];
 
@@ -39,7 +39,7 @@ class LearningMaterialInstructorController extends Controller
     }
 
     // Menyimpan learning material baru ke database
-    public function store(Request $request, $course)
+    public function store(Request $request, $module)
     {
         DB::beginTransaction();
         try {
@@ -47,6 +47,7 @@ class LearningMaterialInstructorController extends Controller
                 'description' => 'required|string',
             ]);
             
+            $file_name = null;
             if ($request->hasFile('file_path')) {
                 $file = $request->file('file_path');
                 $file_name = 'material_' .time() . '.' . $file->getClientOriginalExtension();
@@ -54,7 +55,7 @@ class LearningMaterialInstructorController extends Controller
             }
 
             $formdata = [
-                'course_id' => $course, // Menyimpan ID kursus
+                'module_id' => $module, // Menyimpan ID kursus
                 'title' => $request->title,
                 'description' => $request->description,
                 'file_path' => $file_name,
@@ -64,7 +65,7 @@ class LearningMaterialInstructorController extends Controller
             LearningMaterial::create($formdata);
             DB::commit();
 
-            return redirect()->route('instructor.learning-materials.index', $course)->with('success', 'Learning Materials added successfully.'); // Mengalihkan dengan pesan sukses
+            return redirect()->route('instructor.learning-materials.index', $module)->with('success', 'Learning Materials added successfully.'); // Mengalihkan dengan pesan sukses
         } catch (\Throwable $th) {
             DB::rollBack();
             return redirect()->back()->with('error', $th->getMessage())->withInput();
@@ -75,10 +76,11 @@ class LearningMaterialInstructorController extends Controller
     }
 
     // Menampilkan form untuk mengedit learning material
-    public function edit($course, $id)
+    public function edit($module, $id)
     {
         $data = [
-            'course' => Course::find($course),
+            'module' => $module,
+            // 'course' => Course::find($course),
             'data' => LearningMaterial::with('course')->findOrFail($id),
         ];
         return view('pages.backend.instructor.learning_materials.form', $data); // Mengembalikan view untuk mengedit
@@ -133,7 +135,9 @@ class LearningMaterialInstructorController extends Controller
         DB::beginTransaction();
         try {
             $learningMaterial = LearningMaterial::findOrFail($id); // Mencari learning material berdasarkan ID
-            Storage::delete($learningMaterial->file_path); // Menghapus file dari storage
+            if ($learningMaterial->file_path != null) {
+                Storage::delete($learningMaterial->file_path); // Menghapus file dari storage
+            }
             $learningMaterial->delete(); // Menghapus data dari database
 
             DB::commit();

@@ -51,19 +51,6 @@ class CourseFormatSeeder extends Seeder
                     <li><i class="fa fa-arrow-right text-primary me-2"></i>Certificate provided after successful completion.</li>
                 </ul>',
             ],
-            [
-                'id' => 4,
-                'title' => 'Intensive Courses',
-                'slug' => Str::slug('Intensive Courses'),
-                'status' => 'show',
-                'content' => '<ul class="p-0" style="list-style: none">
-                    <li><i class="fa fa-arrow-right text-primary me-2"></i>Condensed Content: Focused and comprehensive material tailored to fit the short timeframe.</li>
-                    <li><i class="fa fa-arrow-right text-primary me-2"></i>Practical Focus: Emphasis on hands-on exercises, real-world projects, and immediate skill application.</li>
-                    <li><i class="fa fa-arrow-right text-primary me-2"></i>Flexible Scheduling: Sessions are available on weekdays, weekends, or evenings to suit different schedules.</li>
-                    <li><i class="fa fa-arrow-right text-primary me-2"></i>Small Class Sizes: Ensures personalized guidance and interaction with instructors.</li>
-                    <li><i class="fa fa-arrow-right text-primary me-2"></i>Immediate Outcomes: Participants gain job-ready skills and a certificate upon completion.</li>
-                </ul>',
-            ],
         ]);
     }
 }

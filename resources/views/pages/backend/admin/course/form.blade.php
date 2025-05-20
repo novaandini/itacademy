@@ -107,7 +107,7 @@
                             <div class="row">
                                 <div class="form-group mb-3 col-md-6">
                                     <label for="description" class="form-label">Description</label>
-                                    <textarea name="description" id="description" cols="30" rows="10" class="form-control" required>{{ $data ? old('description', $data->description) : old('description') }}</textarea>
+                                    <textarea name="description" id="description" cols="30" rows="10" class="form-control description" required>{{ $data ? old('description', $data->description) : old('description') }}</textarea>
                                 </div>
                                 <div class="form-group mb-3 col-md-6">
                                     <label for="image" class="form-label">Program Image</label>
@@ -118,6 +118,94 @@
                                     <small>note: Ukuran gambar maksimal 2MB (.png, .jpg, .jpeg)</small>
                                 </div>
                             </div>
+
+                            <div class="" id="moduleContainer">
+                                <hr>
+                                <div class="h3 text-center">Course Module</div>
+                                @foreach ($modules as $module)
+                                <div class="p-3 border border-dark border-2 mb-3">
+                                    <div class="row">
+                                        <div class="form-group mb-3 col-md-12">
+                                            <label for="module_titles">Module Title</label>
+                                            <input type="text" name="module_titles[]" id="" class="form-control" value="{{ $module->title ?? '' }}">
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="row">
+                                        <div class="form-group mb-3 col-md-12">
+                                            <label for="module_descriptions">Module Description</label>
+                                            <textarea name="module_descriptions" cols="30" rows="10" class="form-control description" required>{{ $module->description ?? '' }}</textarea>
+                                        </div>
+                                    </div>
+                                    
+                                    @if($module->learning_objectives != null)
+                                        <div class="row">
+                                            <div class="form-group mb-3 col-md-12">
+                                                <label for="module_objectives">Learning Objectives</label>
+                                                <input type="text" name="module_objectives[]" id="" class="form-control" value="{{ $module->learning_objectives ?? '' }}">
+                                            </div>
+                                        </div>
+                                    @endif
+                                    
+                                    @if($module->content != null || $module->duration != 0)
+                                        <div class="row">
+                                            <div class="form-group mb-3 col-md-6">
+                                                <label for="module_contents">Content/Material</label>
+                                                <input type="text" name="module_contents[]" id="" class="form-control" value="{{ $module->content ?? '' }}">
+                                            </div>
+                                            <div class="form-group mb-3 col-md-6">
+                                                <label for="module_durations">Duration (hours)</label>
+                                                <input type="number" name="module_durations[]" value="{{ $module->duration_hours ?? 0 }}" min="1" max="100" id="" class="form-control">
+                                            </div>
+                                        </div>
+                                    @endif
+                                    
+                                    @if($module->activities != null || $module->assessment_types != null)
+                                        <div class="row">
+                                            <div class="form-group mb-3 col-md-6">
+                                                <label for="module_activities">Activities</label>
+                                                <input type="text" name="module_activities[]" id="" class="form-control" value="{{ $module->activities ?? '' }}">
+                                            </div>
+                                            <div class="form-group mb-3 col-md-6">
+                                                <label for="module_assesssment_types">Assessment Type</label>
+                                                <input type="text" name="module_assesssment_types[]" id="" class="form-control" value="{{ $module->assessment_type ?? '' }}">
+                                            </div>
+                                        </div>
+                                    @endif
+                                    
+                                    @if ($module->passing_grade != 0 || $module->module_status != null)
+                                        <div class="row">
+                                            <div class="form-group mb-3 col-md-6">
+                                                <label for="module_passing_grades">Passing Grade (%)</label>
+                                                <input type="number" name="module_passing_grades[]" min="1" max="100" value="{{ $module->passing_grade ?? 0 }}" id="" class="form-control">
+                                            </div>
+                                            <div class="form-group mb-3 col-md-6">
+                                                <label for="module_status">Status</label>
+                                                <select name="module_status[]" id="" class="form-control">
+                                                    <option value="draft" {{ $module->module_status == 'draft' ? 'selected' : '' }}>Draft</option>
+                                                    <option value="published" {{ $module->module_status == 'published' ? 'selected' : '' }}>Published</option>
+                                                    <option value="unpublished" {{ $module->module_status == 'unpublished' ? 'selected' : '' }}>Unpublished</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    @endif
+                                    
+                                    @if ($module->resources != null || $module->prerequisites != null)
+                                        <div class="row">
+                                            <div class="form-group mb-3 col-md-6">
+                                                <label for="module_resources">Resources</label>
+                                                <input type="text" name="module_resources[]" id="" class="form-control" value="{{ $module->resources ?? '' }}">
+                                            </div>
+                                            <div class="form-group mb-3 col-md-6">
+                                                <label for="module_prerequisites">Prerequisites</label>
+                                                <input type="text" name="module_prerequisites[]" id="" class="form-control" value="{{ $module->prerequisites ?? '' }}">
+                                            </div>
+                                        </div>
+                                    @endif
+                                </div>
+                                @endforeach
+                            </div>
+
 
                             <div class="form-group mb-3">
                                 <label for="" class="form-label">Action</label>
@@ -155,26 +243,28 @@
         <script>
             $(document).ready(function() {
                 $("input:not(.form-check-input, [name=_token]), textarea, select").prop("disabled", true);
-                $('#description').summernote({
-                    tabsize: 2,
-                    height: 100,
-                    callbacks: {
-                        onImageUpload: function(files) {
-                            alert('Image upload is disabled.');
-                        }
-                    },
-                    disableDragAndDrop: true,
-                    toolbar: [
-                        ['style', ['style']],
-                        ['font', ['bold', 'underline', 'clear']],
-                        ['color', ['color']],
-                        ['para', ['ul', 'ol', 'paragraph']],
-                        ['table', ['table']],
-                        ['insert', ['link', 'video']],
-                        ['view', ['fullscreen', 'codeview', 'help']]
-                    ]
+                
+                $('.description').each(function() {
+                    $(this).summernote({
+                        tabsize: 2,
+                        height: 100,
+                        callbacks: {
+                            onImageUpload: function(files) {
+                                alert('Image upload is disabled.');
+                            }
+                        },
+                        disableDragAndDrop: true,
+                        toolbar: [
+                            ['style', ['style']],
+                            ['font', ['bold', 'underline', 'clear']],
+                            ['color', ['color']],
+                            ['para', ['ul', 'ol', 'paragraph']],
+                            ['table', ['table']],
+                            ['insert', ['link', 'video']],
+                            ['view', ['fullscreen', 'codeview', 'help']]
+                        ]
+                    }).summernote('disable');
                 });
-                $('#description').summernote('disable');
 
                 $('.dropify').dropify({
                     messages: {

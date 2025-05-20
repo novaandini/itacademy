@@ -39,21 +39,12 @@
                         </div>
                     @endif
 
-                    <form action="{{ $data ? route('instructor.assignments.update', [$course->id, $data->id]) : route('instructor.assignments.store', $course->id) }}" method="POST"
+                    <form action="{{ $data ? route('instructor.assignments.update', [$module, $data->id]) : route('instructor.assignments.store', $module) }}" method="POST"
                         enctype="multipart/form-data">
                         @csrf
                         @isset($data)
                             @method('PUT')
                         @endisset
-
-                        <div class="form-group mb-3">
-                            <label for="course_id">Select Course</label>
-                            <select class="form-control" name="course_id" disabled>
-                                <option value="{{ $course->id }}" selected>
-                                    {{ $course->title }}
-                                </option>
-                            </select>
-                        </div>
 
                         <div class="form-group mb-3">
                             <label for="title">Title</label>
@@ -73,8 +64,7 @@
                         <div class="form-group mb-4">
                             <label for="file">File</label>
                             <input type="file" class="dropify @error('file_path') is-invalid @enderror" 
-                            id="file_path" name="file_path" 
-                            required accept="image/jpeg, image/png, application/pdf, application/msword, 
+                            id="file_path" name="file_path" accept="image/jpeg, image/png, application/pdf, application/msword, 
                             application/vnd.openxmlformats-officedocument.wordprocessingml.document, 
                             application/vnd.ms-powerpoint, application/vnd.openxmlformats-officedocument.presentationml.presentation" data-max-file-size="2M" data-allowed-file-extensions="jpg png jpeg pdf doc docx ppt pptx" data-default-file="{{ $data ? old('file_path', $data->file_path) : old('file_path') }}" data-show-remove="false" />
                             @error('file_path')
@@ -95,7 +85,7 @@
                         </div>
 
                         <div class="d-flex justify-content-between">
-                            <a href="{{ route('instructor.assignments.index', $course->id) }}" class="btn btn-secondary px-4">Cancel</a>
+                            <a href="{{ route('instructor.assignments.index', $module) }}" class="btn btn-secondary px-4">Cancel</a>
                             <button type="submit" class="btn btn-primary px-4">Submit</button>
                         </div>
                     </form>

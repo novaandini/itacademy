@@ -22,11 +22,11 @@ return new class extends Migration
             $table->integer('duration_hours')->nullable();
             $table->text('activities')->nullable();
             $table->text('assessment_type')->nullable();
-            $table->integer('passing_score')->nullable();
-            $table->string('module_status')->nullable();
+            $table->integer('passing_grade')->nullable();
+            $table->enum('module_status', ['draft', 'published', 'unpublished'])->default('draft')->nullable();
             $table->text('resources')->nullable();
             $table->text('prerequisites')->nullable();
-            $table->enum('certificate_eligibility', ['yes', 'no']);
+            $table->enum('certificate_eligibility', ['yes', 'no'])->default('no');
             $table->timestamps();
 
             $table->foreign('course_id')->references('id')->on('courses')->cascadeOnDelete();

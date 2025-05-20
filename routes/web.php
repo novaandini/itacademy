@@ -39,6 +39,7 @@ use App\Http\Controllers\Backend\Instructor\SubmissionInstructorController;
 use App\Http\Controllers\Backend\Student\LearningMaterialStudentController;
 use App\Http\Controllers\Backend\Instructor\CertificationInstructorController;
 use App\Http\Controllers\Backend\Instructor\LearningMaterialInstructorController;
+use App\Http\Controllers\Backend\Instructor\ModuleInstructorController;
 
 /*
 |--------------------------------------------------------------------------
@@ -254,7 +255,13 @@ Route::middleware(['auth', 'role:instructor,Admin'])->prefix('instructor')->name
     //     Route::get('/', 'index')->name('index');
     // });
 
-    Route::controller(LearningMaterialInstructorController::class)->prefix('{course}/materials')->name('learning-materials.')->group(function() {
+    Route::controller(ModuleInstructorController::class)->prefix('{course}/modules')->name('module.')->group(function() {
+        Route::get('/', 'index')->name('index');
+        Route::get('edit/{id}', 'edit')->name('edit');
+        Route::put('update/{id}', 'update')->name('update');
+    });
+
+    Route::controller(LearningMaterialInstructorController::class)->prefix('{module}/materials')->name('learning-materials.')->group(function() {
         Route::get('/', 'index')->name('index');
         Route::get('/create', 'create')->name('create');
         Route::post('/store', 'store')->name('store');
@@ -278,7 +285,7 @@ Route::middleware(['auth', 'role:instructor,Admin'])->prefix('instructor')->name
         Route::delete('/destroy/{id}', 'destroy')->name('destroy');
     });
 
-    Route::controller(AssignmentController::class)->prefix('{course}/assignments')->name('assignments.')->group(function() {
+    Route::controller(AssignmentController::class)->prefix('{module}/assignments')->name('assignments.')->group(function() {
         Route::get('/', 'index')->name('index');
         Route::get('/create', 'create')->name('create');
         Route::post('/store', 'store')->name('store');
@@ -287,7 +294,7 @@ Route::middleware(['auth', 'role:instructor,Admin'])->prefix('instructor')->name
         Route::delete('/destroy/{id}', 'destroy')->name('destroy');
     });
 
-    Route::controller(SubmissionInstructorController::class)->prefix('{course}/submission')->name('submission.')->group(function() {
+    Route::controller(SubmissionInstructorController::class)->prefix('{module}/submission')->name('submission.')->group(function() {
         Route::get('/{id}', 'index')->name('index');
         Route::get('/{id}/review', 'review')->name('review');
         Route::post('/{id}/store', 'store')->name('store');

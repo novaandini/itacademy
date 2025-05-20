@@ -112,7 +112,7 @@ class InstructorAdminController extends Controller
                 ];
 
                 $instructor = [
-                    'instructor_id' => $this->generateCertificateNumber(),
+                    'instructor_id' => $this->generateInstructorNumber(),
                 ];
     
                 User::where('id', $id)->update($formdata);
@@ -159,7 +159,7 @@ class InstructorAdminController extends Controller
         }
     }
 
-    function generateCertificateNumber()
+    function generateInstructorNumber()
     {
         $count = Instructor::where('instructor_id', '!=', null)->count() + 1;
         $number = str_pad($count, 4, '0', STR_PAD_LEFT);
@@ -167,8 +167,8 @@ class InstructorAdminController extends Controller
         $date = Carbon::now(); // Mendapatkan tanggal saat ini
         $formattedDate = $date->format('dmy');
 
-        $student_number = 'INS' . $number . $formattedDate;
+        $instructor_number = 'INS' . $number . $formattedDate;
 
-        return $student_number;
+        return $instructor_number;
     }
 }

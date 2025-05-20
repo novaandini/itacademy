@@ -13,9 +13,9 @@ class Assignment extends Model
     protected $guarded = [];
 
     // Relasi ke model Course
-    public function course()
+    public function module()
     {
-        return $this->belongsTo(Course::class); // Mengindikasikan bahwa assignment milik satu course
+        return $this->belongsTo(Module::class); // Mengindikasikan bahwa assignment milik satu course
     }
 
     // Relasi ke model Submission

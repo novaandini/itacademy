@@ -325,18 +325,10 @@
                                         </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="{{ route('instructor.learning-materials.index', $data->id) }}" class="nav-link">
+                                        <a href="{{ route('instructor.module.index', $data->id) }}" class="nav-link">
                                             <i class="nav-icon fas fa-book"></i>
                                             <p>
-                                                Learning Material
-                                            </p>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="{{ route('instructor.assignments.index', $data->id) }}" class="nav-link">
-                                            <i class="nav-icon fa fa-check-square"></i>
-                                            <p>
-                                                Assignment
+                                                Modules
                                             </p>
                                         </a>
                                     </li>

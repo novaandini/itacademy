@@ -25,10 +25,6 @@
                     <h1 class="card-title">{{ $title }}</h1>
                 </div>
                 <div class="card-body">
-                    <div class="mb-2" id="userName" style="text-align: right;">
-                        <p>Name : {{ Auth::user()->name }}</p> <!-- Nama User -->
-                    </div>
-            
                     <!-- Tombol Print -->
                     <div class="d-flex justify-content-between mb-4">
                         <button onclick="window.print()" class="btn btn-primary"><i class="bi bi-printer"></i> Print</button>
@@ -52,7 +48,7 @@
                                     <td>{{ $data->status }}</td>
                                     <td>{{ $data->grade }}</td>
                                     <td class="text-center">
-                                        <a href="{{ route('instructor.submission.review', [$course, $data->id]) }}" class="btn btn-success btn-sm"><i class="fa fa-eye"></i></a>
+                                        <a href="{{ route('instructor.submission.review', [$module, $data->id]) }}" class="btn btn-success btn-sm"><i class="fa fa-eye"></i></a>
                                     </td>
                                 </tr>
                             @endforeach

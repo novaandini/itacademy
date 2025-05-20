@@ -29,7 +29,7 @@
                 @endif
                 <!-- /.card-header -->
                 <div class="card-body">
-                    <form action="{{ route('instructor.submission.store', [$course, $data->id]) }}" method="POST" enctype="multipart/form-data">
+                    <form action="{{ route('instructor.submission.store', [$module, $data->id]) }}" method="POST" enctype="multipart/form-data">
                         @csrf
                     
                         <!-- Full Name -->

@@ -60,9 +60,9 @@
                         </div>
                     </form>
                     @if(Auth::user()->role === 'instructor' || Auth::user()->role === 'student' || Auth::user()->role === 'Admin')
-                        <div class="table-responsive">
-                            <table class="table table-hover table-bordered table-bordered align-middle" id="scheduleTable">
-                                <thead class="bg-primary text-white">
+                        <div class="card-body">
+                            <table id="example1" class="table table-bordered table-striped">
+                                <thead>
                                     <tr>
                                         <th>Date</th>
                                         <th>Program</th>
@@ -125,3 +125,38 @@
     } */
 </style>
 @endsection  
+@push('script')
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        $(document).ready(function() {
+            $('form.delete').submit(function(e) {
+                e.preventDefault();
+                Swal.fire({
+                    title: 'Apakah Anda yakin?',
+                    text: "Item ini akan dihapus!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Ya, hapus!',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        this.submit(); // Kirim formulir
+                    } else {
+                        Swal.fire('Dibatalkan', 'Penghapusan dibatalkan!', 'info');
+                    }
+                });
+            });
+        });
+    </script>
+    <script>
+        $(function() {
+            $("#example1").DataTable({
+                "responsive": true,
+                "lengthChange": true,
+                "autoWidth": false,
+            }).container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+        });
+    </script>
+@endpush

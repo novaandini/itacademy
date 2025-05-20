@@ -89,7 +89,7 @@
                                     </select>
                                 </div>
                                 <div class="form-group mb-3 col-md-6">
-                                    <label for="programs_id" class="form-label">Course Program</label>
+                                    <label for="programs_id" class="form-label">Course Category</label>
                                     <select class="form-control" aria-label="None" name="programs_id" required>
                                         <option value="">None</option>
                                         @foreach ($programs as $programs)
@@ -104,7 +104,7 @@
                             <!-- Number of Students -->
                             <div class="mb-3">
                                 <label for="capacity" class="form-label">Number of Students</label>
-                                <input type="number" class="form-control" id="capacity" name="capacity" placeholder="Enter number of students" value="{{ $data ? old('capacity', $data->capacity) : old('capacity') }}" required>
+                                <input type="number" class="form-control" id="capacity" value="0" name="capacity" placeholder="Enter number of students" value="{{ $data ? old('capacity', $data->capacity) : old('capacity') }}" required>
                             </div>
 
                             <div class="row">
@@ -122,20 +122,82 @@
                                 </div>
                             </div>
 
-                            <div class="row">
-                                <div class="form-group mb-3 col-md-6">
-                                    <label for="module_title">Module Title</label>
-                                    <input type="text" name="module_titles[]" id="" class="form-control">
-                                </div>
-                                <div class="form-group mb-3 col-md-6">
-                                    <label for="module_description">Module Description</label>
-                                    <textarea name="module_descriptions[]" id="description" cols="30" rows="10"></textarea>
-                                </div>
-                                <div class="form-group mb-3 col-md-6">
-                                    <label for="module_objective">Learning Objectives</label>
-                                    <input type="text" name="module_objectives[]" id="" class="form-control">
+                            <div class="" id="moduleContainer">
+                                <hr>
+                                <div class="h3 text-center">Course Module</div>
+                                <div class="row">
+                                    <div class="form-group mb-3 col-md-12">
+                                        <label for="module_titles">Module Title</label>
+                                        <input type="text" name="module_titles[]" id="" class="form-control" required>
+                                    </div>
                                 </div>
                                 
+                                <div class="row">
+                                    <div class="form-group mb-3 col-md-12">
+                                        <label for="module_descriptions">Module Description</label>
+                                        <textarea name="module_descriptions[]" id="moduleDescription" cols="30" rows="10" class="form-control" required>{{ $data ? old('description', $data->description) : old('description') }}</textarea>
+                                    </div>
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="form-group mb-3 col-md-12">
+                                        <label for="module_objectives">Learning Objectives</label>
+                                        <input type="text" name="module_objectives[]" id="" class="form-control">
+                                    </div>
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="form-group mb-3 col-md-6">
+                                        <label for="module_contents">Content/Material</label>
+                                        <input type="text" name="module_contents[]" id="" class="form-control">
+                                    </div>
+                                    <div class="form-group mb-3 col-md-6">
+                                        <label for="module_durations">Duration (hours)</label>
+                                        <input type="number" name="module_durations[]" value="0" min="1" max="100" id="" class="form-control">
+                                    </div>
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="form-group mb-3 col-md-6">
+                                        <label for="module_activities">Activities</label>
+                                        <input type="text" name="module_activities[]" id="" class="form-control">
+                                    </div>
+                                    <div class="form-group mb-3 col-md-6">
+                                        <label for="module_assesssment_types">Assessment Type</label>
+                                        <input type="text" name="module_assesssment_types[]" id="" class="form-control">
+                                    </div>
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="form-group mb-3 col-md-6">
+                                        <label for="module_passing_grades">Passing Grade (%)</label>
+                                        <input type="number" name="module_passing_grades[]" min="1" max="100" id="" class="form-control">
+                                    </div>
+                                    <div class="form-group mb-3 col-md-6">
+                                        <label for="module_status">Status</label>
+                                        <select name="module_status[]" id="" class="form-control">
+                                            <option value="draft">Draft</option>
+                                            <option value="published">Published</option>
+                                            <option value="unpublished">Unpublished</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="form-group mb-3 col-md-6">
+                                        <label for="module_resources">Resources</label>
+                                        <input type="text" name="module_resources[]" id="" class="form-control">
+                                    </div>
+                                    <div class="form-group mb-3 col-md-6">
+                                        <label for="module_prerequisites">Prerequisites</label>
+                                        <input type="text" name="module_prerequisites[]" id="" class="form-control">
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="">
+                                <button type="button" class="btn btn-danger" id="addModule">Add Module</button>
                             </div>
 
                             <div class="text-right mt-4">
@@ -176,6 +238,25 @@
                         ['view', ['fullscreen', 'codeview', 'help']]
                     ]
                 });
+                $('#moduleDescription').addClass('module-summernote').summernote({
+                    tabsize: 2,
+                    height: 100,
+                    callbacks: {
+                        onImageUpload: function(files) {
+                            alert('Image upload is disabled.');
+                        }
+                    },
+                    disableDragAndDrop: true,
+                    toolbar: [
+                        ['style', ['style']],
+                        ['font', ['bold', 'underline', 'clear']],
+                        ['color', ['color']],
+                        ['para', ['ul', 'ol', 'paragraph']],
+                        ['table', ['table']],
+                        ['insert', ['link', 'video']],
+                        ['view', ['fullscreen', 'codeview', 'help']]
+                    ]
+                });
 
                 $('.dropify').dropify({
                     messages: {
@@ -190,10 +271,108 @@
                 });
 
                 // Remove 'required' attribute if a default file is set
-                const dropifyInput = document.getElementById('file');
+                const dropifyInput = document.getElementById('image');
                 if (dropifyInput.dataset.defaultFile) {
                     dropifyInput.removeAttribute('required');
                 }
+
+                $('#addModule').on('click', function() {
+                    console.log('Tombol diklik');
+                    const moduleHTML = `
+                        <hr>
+                        <div class="row">
+                            <div class="form-group mb-3 col-md-12">
+                                <label>Module Title</label>
+                                <input type="text" name="module_titles[]" class="form-control" required>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group mb-3 col-md-12">
+                                <label>Module Description</label>
+                                <textarea name="module_descriptions[]" class="form-control module-summernote" rows="3" required></textarea>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group mb-3 col-md-12">
+                                <label>Learning Objectives</label>
+                                <input type="text" name="module_objectives[]" class="form-control">
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group mb-3 col-md-6">
+                                <label>Content/Material</label>
+                                <input type="text" name="module_contents[]" class="form-control">
+                            </div>
+                            <div class="form-group mb-3 col-md-6">
+                                <label>Duration (hours)</label>
+                                <input type="number" name="module_durations[]" value="0" min="1" max="100" class="form-control">
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group mb-3 col-md-6">
+                                <label>Activities</label>
+                                <input type="text" name="module_activities[]" class="form-control">
+                            </div>
+                            <div class="form-group mb-3 col-md-6">
+                                <label>Assessment Type</label>
+                                <input type="text" name="module_assesssment_types[]" class="form-control">
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group mb-3 col-md-6">
+                                <label>Passing Grade (%)</label>
+                                <input type="number" name="module_passing_grades[]" min="1" max="100" class="form-control">
+                            </div>
+                            <div class="form-group mb-3 col-md-6">
+                                <label>Status</label>
+                                <select name="module_status[]" class="form-control">
+                                    <option value="draft">Draft</option>
+                                    <option value="published">Published</option>
+                                    <option value="unpublished">Unpublished</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="form-group mb-3 col-md-6">
+                                <label>Resources</label>
+                                <input type="text" name="module_resources[]" class="form-control">
+                            </div>
+                            <div class="form-group mb-3 col-md-6">
+                                <label>Prerequisites</label>
+                                <input type="text" name="module_prerequisites[]" class="form-control">
+                            </div>
+                        </div>
+                    `;
+
+                    $('#moduleContainer').append(moduleHTML);
+
+                    // Re-init Summernote untuk textarea baru
+                    $('.module-summernote').last().summernote({
+                        tabsize: 2,
+                        height: 100,
+                        callbacks: {
+                            onImageUpload: function(files) {
+                                alert('Image upload is disabled.');
+                            }
+                        },
+                        disableDragAndDrop: true,
+                        toolbar: [
+                            ['style', ['style']],
+                            ['font', ['bold', 'underline', 'clear']],
+                            ['color', ['color']],
+                            ['para', ['ul', 'ol', 'paragraph']],
+                            ['table', ['table']],
+                            ['insert', ['link', 'video']],
+                            ['view', ['fullscreen', 'codeview', 'help']]
+                        ]
+                    });
+                });
             });
         </script>
         <script>
